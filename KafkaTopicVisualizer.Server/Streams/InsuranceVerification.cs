@@ -15,7 +15,7 @@ public sealed class InsuranceVerification : InsuranceVerificationStream.Insuranc
 		var config = new ConsumerConfig()
 			.Build(request.ConsumerConfig);
 
-		var consumer = new TopicConsumer<Verification>(consumerConfig, request.Topic, deserializer);
+		var consumer = new TopicConsumer<Verification>(config, request.Topic, deserializer);
 		Task.Run(() => consumer.Listen(context.CancellationToken));
 
 		while (!context.CancellationToken.IsCancellationRequested)
