@@ -1,0 +1,142 @@
+﻿@page "/"
+@using Grpc.Core
+@using Grpc.Net.Client
+@inject GrpcChannel Channel;
+@inject NavigationManager NavManager;
+
+<PageTitle>Index</PageTitle>
+
+<MudContainer Class="mt-16">
+    <MudText Typo="Typo.h3" Align="Align.Center" GutterBottom="true">Topic Reader</MudText>
+    <MudText Align="Align.Center">"Back in my day we read from scrolls" -Leo</MudText>
+    <MudGrid Class="mt-8">
+        <MudItem xs="12">
+            <MudCard Elevation="25" Class="rounded-lg pb-4">
+                <MudCardHeader>
+                    <CardHeaderContent>
+                        <MudText Typo="Typo.h5" Align="Align.Center">@_title</MudText>
+                    </CardHeaderContent>
+                </MudCardHeader>
+                    @if (@_connected)
+                    {
+                        <MudCardContent>
+                            <MudTable Items="@_verifications"
+                                      Class="mud-width-full table-margin"
+                                      Hover="true" Breakpoint="Breakpoint.Xs"
+                                      Loading="@_connected">
+                                <HeaderContent>
+                                    @foreach (var p in typeof(Verification).GetProperties())
+                                    {
+                                        if (!p.Name.Equals("Parser") && !p.Name.Equals("Descriptor"))
+                                        {
+                                            <MudTh>@p.Name</MudTh>
+                                        }
+                                    }
+                                </HeaderContent>
+                                <RowTemplate>
+                                    @foreach (var p in typeof(Verification).GetProperties())
+                                    {
+                                        if (!p.Name.Equals("Parser") && !p.Name.Equals("Descriptor"))
+                                        {
+                                            <MudTd>@p.GetValue(context)</MudTd>
+                                        }
+                                    }
+                                </RowTemplate>
+                            </MudTable>
+                        </MudCardContent>
+                    }
+                    else
+                    {
+                        <MudForm @ref="@_form" Model="@_request" @bind-IsValid="@_success" @bind-Errors="@_formErrors">
+                            <MudCardContent>
+                                <MudTextField T="string" Label="BootstrapServers" @bind-Value="@_request.ConsumerConfig.BootstrapServers" For="@(() => _request.ConsumerConfig.BootstrapServers)" Required="true" RequiredError="Required"/>
+                                <MudSelect T="string" Label="SecurityProtocol" @bind-Value="@_request.ConsumerConfig.SecurityProtocol" For="@(() => _request.ConsumerConfig.SecurityProtocol)" AnchorOrigin="Origin.BottomCenter">
+                                    <MudSelectItem Value="@("SaslSsl")" />
+                                    <MudSelectItem Value="@("Plaintext")" />
+                                    <MudSelectItem Value="@("Ssl")" />
+                                    <MudSelectItem Value="@("SaslPlaintext")" />
+                                </MudSelect>
+                                <MudTextField T="string" Label="GroupId" @bind-Value="@_request.ConsumerConfig.GroupId" For="@(() => _request.ConsumerConfig.GroupId)" Required="true" RequiredError="Required" />
+                                <MudSelect T="string" Label="AutoOffsetReset" @bind-Value="@_request.ConsumerConfig.AutoOffsetReset" For="@(() => _request.ConsumerConfig.GroupId)" AnchorOrigin="Origin.BottomCenter">
+                                    <MudSelectItem Value="@("Earliest")" />
+                                    <MudSelectItem Value="@("Latest")" />
+                                    <MudSelectItem Value="@("Error")" />
+                                </MudSelect>
+                                <MudSelect T="string" Label="SaslMechanism" @bind-Value="@_request.ConsumerConfig.SaslMechanism" For="@(() => _request.ConsumerConfig.SaslMechanism)" AnchorOrigin="Origin.BottomCenter">
+                                    <MudSelectItem Value="@("Plain")" />
+                                    <MudSelectItem Value="@("Gssapi")" />
+                                    <MudSelectItem Value="@("ScramSha256")" />
+                                    <MudSelectItem Value="@("ScramSha512")" />
+                                    <MudSelectItem Value="@("OAuthBearer")" />
+                                </MudSelect>
+                                <MudTextField T="string" Label="SaslUserName" @bind-Value="@_request.ConsumerConfig.SaslUserName" For="@(() => _request.ConsumerConfig.SaslUserName)" Required="true" RequiredError="Required" />
+                                <MudTextField T="string" Label="SaslPassword" @bind-Value="@_request.ConsumerConfig.SaslPassword" For="@(() => _request.ConsumerConfig.SaslPassword)" Required="true" RequiredError="Required" />
+                                <MudSelect T="string" Label="Deserializer" @bind-Value="@_request.Deserializer" For="@(() => _request.Deserializer)"AnchorOrigin="Origin.BottomCenter">
+                                    <MudSelectItem Value="@("Protobuf")" />
+                                </MudSelect>
+                            </MudCardContent>
+                            <MudCardActions Class="d-flex justify-center">
+                                <MudButton Variant="Variant.Filled" Color="Color.Primary" Disabled="@(!_success)" Class="ml-auto" OnClick="@(() => GetMessages())">Connect</MudButton>
+                                @*<MudButton Variant="Variant.Filled" Color="Color.Primary" Size="Size.Large" Style="width:50%;" @Disabled="@_connected" OnClick="@GetMessages">Connect</MudButton>*@
+                            </MudCardActions>
+                         </MudForm>
+                    }
+            </MudCard>
+        </MudItem>
+    </MudGrid>
+</MudContainer>
+
+@code
+{
+    private List<Verification> _verifications { get; set; } = new List<Verification>();
+    private CancellationTokenSource _cts { get; set; } = new CancellationTokenSource();
+    private bool _connected;
+    private string _title = "Insurance Verification";
+    private ConsumeRequest _request = new ConsumeRequest();
+    private MudForm? _form;
+    private bool _success;
+    private string[] _formErrors;
+
+    private async Task GetMessages()
+    {
+        _request.Topic = "underwriting-insurance-verification";
+
+        var client = new InsuranceVerificationStream.InsuranceVerificationStreamClient(Channel);
+        using var call = client.Consume(_request, cancellationToken: _cts.Token);
+
+        try
+        {
+            _connected = true;
+            await foreach (var message in call.ResponseStream.ReadAllAsync())
+            {
+                var difference = message.Verifications.Count - _verifications.Count;
+
+                _verifications.AddRange(message.Verifications.TakeLast(difference));
+
+                if (difference > 0)
+                {
+                    StateHasChanged();
+                }
+            }
+        }
+        catch (OperationCanceledException)
+        {
+            _connected = false;
+        }
+        catch (Exception ex)
+        {
+            var msg = ex.Message;
+        }
+        finally
+        {
+            call.Dispose();
+            _connected = false;
+            StateHasChanged();
+        }
+    }
+
+    protected override void OnInitialized()
+    {
+        _request.ConsumerConfig = new ConsumeConfig();
+    }
+}

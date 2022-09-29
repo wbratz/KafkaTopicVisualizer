@@ -1,0 +1,40 @@
+syntax = "proto3";
+
+option csharp_namespace = "KafkaTopicVisualizer";
+
+service InsuranceVerificationStream {
+	rpc Consume(ConsumeRequest) returns (stream VerificationList);
+}
+
+message Empty{
+}
+
+message ConsumeRequest {
+	ConsumeConfig ConsumerConfig = 1;
+	string topic = 2;
+	string deserializer = 3;
+}
+
+message ConsumeConfig {
+	string bootstrapServers = 1;
+	string securityProtocol = 2;
+	string groupId = 3;
+	string autoOffsetReset = 4;
+	string saslMechanism = 5;
+	string saslUserName = 6;
+	string saslPassword = 7;
+}
+
+message Verification {
+  string id = 1;
+  string referenceId = 3;
+  string referenceType = 4;
+  string customerId = 5;
+  string vehicleId = 6;
+  repeated string documentIds = 7;
+  string verifiedInformationId = 8;
+}
+
+message VerificationList {
+	repeated Verification verifications = 1;
+}

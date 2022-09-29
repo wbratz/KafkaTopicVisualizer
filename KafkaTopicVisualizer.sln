@@ -1,0 +1,44 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.4.32912.340
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Client", "Client", "{46EC1672-C841-4B7D-B623-E30E03E58C57}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Server", "Server", "{78804213-2CD2-482D-8D22-73DE8805006C}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Protos", "Protos", "{E1D33E84-6249-4EB1-98A6-C2985052B416}"
+	ProjectSection(SolutionItems) = preProject
+		InsuranceVerification.proto = InsuranceVerification.proto
+	EndProjectSection
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "KafkaTopicVisualizer.UI", "KafkaTopicVisualizer.UI\KafkaTopicVisualizer.UI.csproj", "{BABD1E64-9725-4B06-8D96-DE1BEAB76A64}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "KafkaTopicVisualizer.Server", "KafkaTopicVisualizer.Server\KafkaTopicVisualizer.Server.csproj", "{D2CAF373-330C-43E8-A42A-075F88223321}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{BABD1E64-9725-4B06-8D96-DE1BEAB76A64}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{BABD1E64-9725-4B06-8D96-DE1BEAB76A64}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{BABD1E64-9725-4B06-8D96-DE1BEAB76A64}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{BABD1E64-9725-4B06-8D96-DE1BEAB76A64}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D2CAF373-330C-43E8-A42A-075F88223321}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D2CAF373-330C-43E8-A42A-075F88223321}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D2CAF373-330C-43E8-A42A-075F88223321}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D2CAF373-330C-43E8-A42A-075F88223321}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{BABD1E64-9725-4B06-8D96-DE1BEAB76A64} = {46EC1672-C841-4B7D-B623-E30E03E58C57}
+		{D2CAF373-330C-43E8-A42A-075F88223321} = {78804213-2CD2-482D-8D22-73DE8805006C}
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {710B1D10-E72A-4B89-8E61-FB5584A68EB9}
+	EndGlobalSection
+EndGlobal
