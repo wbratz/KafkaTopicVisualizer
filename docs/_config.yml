@@ -28,7 +28,7 @@ twitter_username:
 github_username: wbratz
 
 # Build settings
-theme: Midnight
+theme: midnight
 plugins:KafkaTopicVisualizer
   - jekyll-feed
 # Exclude from processing.
