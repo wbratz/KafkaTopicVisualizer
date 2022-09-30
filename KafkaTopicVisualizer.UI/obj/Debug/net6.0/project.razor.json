@@ -1,0 +1,46 @@
+{
+  "FilePath": "c:\\dev\\KafkaTopicVisualizer\\KafkaTopicVisualizer.UI\\KafkaTopicVisualizer.UI.csproj",
+  "Configuration": {
+    "ConfigurationName": "Default",
+    "LanguageVersion": "6.0",
+    "Extensions": []
+  },
+  "ProjectWorkspaceState": {
+    "TagHelpers": [],
+    "CSharpLanguageVersion": 1000
+  },
+  "RootNamespace": "KafkaTopicVisualizer.UI",
+  "Documents": [
+    {
+      "FilePath": "c:\\dev\\KafkaTopicVisualizer\\KafkaTopicVisualizer.UI\\Pages\\Index.razor",
+      "TargetPath": "Pages\\Index.razor",
+      "FileKind": "component"
+    },
+    {
+      "FilePath": "c:\\dev\\KafkaTopicVisualizer\\KafkaTopicVisualizer.UI\\_Imports.razor",
+      "TargetPath": "_Imports.razor",
+      "FileKind": "componentImport"
+    },
+    {
+      "FilePath": "c:\\dev\\KafkaTopicVisualizer\\KafkaTopicVisualizer.UI\\App.razor",
+      "TargetPath": "App.razor",
+      "FileKind": "component"
+    },
+    {
+      "FilePath": "c:\\dev\\KafkaTopicVisualizer\\KafkaTopicVisualizer.UI\\Shared\\MainLayout.razor",
+      "TargetPath": "Shared\\MainLayout.razor",
+      "FileKind": "component"
+    },
+    {
+      "FilePath": "c:\\dev\\KafkaTopicVisualizer\\KafkaTopicVisualizer.UI\\Shared\\SurveyPrompt.razor",
+      "TargetPath": "Shared\\SurveyPrompt.razor",
+      "FileKind": "component"
+    },
+    {
+      "FilePath": "c:\\dev\\KafkaTopicVisualizer\\KafkaTopicVisualizer.UI\\Shared\\NavMenu.razor",
+      "TargetPath": "Shared\\NavMenu.razor",
+      "FileKind": "component"
+    }
+  ],
+  "SerializationFormat": "0.2"
+}
